@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace common;
+namespace app\common;
 
 class Config {
     protected static $configData = null;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace common;
+namespace app\common;
 
 if (defined('__Autoload__')) { return; }
 define('__Autoload__', true);
@@ -49,4 +49,4 @@ class Autoloader {
 }
 
 spl_autoload_extensions(join(',', ['.php', '.class.php', '.lib.php']));
-spl_autoload_register('common\Autoloader::autoload');
+spl_autoload_register('app\common\Autoloader::autoload');
