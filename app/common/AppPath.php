@@ -8,4 +8,5 @@ class AppPath {
     public const ROOT = __DIR__ . '/../../';
     public const CONFIG = self::ROOT . '/config/';
     public const LOGS = self::ROOT . '/logs/';
+    public const MIGRATIONS = self::ROOT . '/migrations/';
 }

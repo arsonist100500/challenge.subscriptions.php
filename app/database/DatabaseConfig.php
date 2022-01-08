@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-namespace app\common;
+namespace app\database;
+
+use app\common\Config;
 
 class DatabaseConfig extends Config {
     public static function get(string $name) {

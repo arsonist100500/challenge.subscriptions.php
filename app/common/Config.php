@@ -25,10 +25,10 @@ class Config {
         $files = [];
         $iterator = new \DirectoryIterator(AppPath::CONFIG);
         foreach ($iterator as $file) {
-            if (!$file->isDot() && $file->isReadable()) {
-                Log::info($file->getRealPath());
+            if (!$file->isDot() && $file->isFile() && $file->isReadable()) {
                 $name = $file->getBasename('.'.$file->getExtension());
                 $files[$name] = include($file->getRealPath());
+                Log::debug('found config: ' . $name);
             }
         }
         return $files;
