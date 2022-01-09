@@ -8,7 +8,13 @@ use PDO;
 use app\common\Log;
 
 class PDOHelper {
+    /** @var PDO|null  */
+    protected static $connection = null;
+
     public static function connect(): ?PDO {
+        if (self::$connection) {
+            return self::$connection;
+        }
         $host = DatabaseConfig::get('host') ?? 'localhost';
         $port = (int)(DatabaseConfig::get('port') ?? 3306);
         $user = DatabaseConfig::get('user') ?? null;
@@ -18,6 +24,7 @@ class PDOHelper {
         try {
             $pdo = new PDO($dsn, $user, $password);
             if ($pdo) {
+                self::$connection = $pdo;
                 Log::debug("connected to the $dbname database");
             }
             return $pdo;
