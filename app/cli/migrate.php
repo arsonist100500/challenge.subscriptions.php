@@ -11,12 +11,16 @@ require_once(__DIR__ . '/../common/Autoload.php');
 
 function main() {
     $app = new CliApp(function () {
+        $migrations = [];
         $iterator = new \DirectoryIterator(AppPath::MIGRATIONS);
         foreach ($iterator as $fileInfo) {
             if (!$fileInfo->isDot() && $fileInfo->isFile() && $fileInfo->isReadable()) {
-                $migration = new Migration($fileInfo->getRealPath());
-                $migration->run();
+                $migrations[$fileInfo->getFilename()] = new Migration($fileInfo->getRealPath());
             }
+        }
+        ksort($migrations);
+        foreach ($migrations as $migration) {
+            $migration->run();
         }
     });
     $app->run();
