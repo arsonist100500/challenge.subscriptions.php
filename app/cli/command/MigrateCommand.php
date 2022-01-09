@@ -2,15 +2,18 @@
 
 declare(strict_types=1);
 
-namespace app\cli;
+namespace app\cli\command;
 
 use app\common\AppPath;
 use app\database\Migration;
 
-require_once(__DIR__ . '/../common/Autoload.php');
+/**
+ * Class MigrateCommand
+ * @package app\cli\command
+ */
+class MigrateCommand implements CommandInterface {
 
-function main() {
-    $app = new CliApp(function () {
+    public function run(): int {
         $migrations = [];
         $iterator = new \DirectoryIterator(AppPath::MIGRATIONS);
         foreach ($iterator as $fileInfo) {
@@ -18,12 +21,10 @@ function main() {
                 $migrations[$fileInfo->getFilename()] = new Migration($fileInfo->getRealPath());
             }
         }
-        ksort($migrations);
+        \ksort($migrations);
         foreach ($migrations as $migration) {
             $migration->run();
         }
-    });
-    $app->run();
+        return 0;
+    }
 }
-
-main();
