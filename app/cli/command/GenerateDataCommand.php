@@ -27,7 +27,7 @@ class GenerateDataCommand implements CommandInterface {
     public function run(): int {
         global $argv;
         $options = \array_slice($argv, 2);
-        $amount = $options[0] ?? 100;
+        $amount = (int)($options[0] ?? 100);
         TimeHelper::measureFunction(function () use ($amount) {
             $this->loadData();
             for ($i = 0; $i < $amount; ++$i) {
