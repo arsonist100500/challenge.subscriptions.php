@@ -107,7 +107,7 @@ class PDOHelper {
         try {
             $pdo = new PDO($dsn, $user, $password);
             if ($pdo) {
-                Log::debug("connected to the $dbname database");
+                Log::trace("connected to the $dbname database");
             }
             return $pdo;
         } catch (\PDOException $e) {
