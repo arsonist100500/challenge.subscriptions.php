@@ -25,9 +25,43 @@ class PDOHelper {
 
     /**
      * @param string $table
+     * @param array $where
+     * @return array|null
+     * @throws \Exception
+     */
+    public static function get(string $table, array $where): ?array {
+        if (empty($where)) {
+            return null;
+        }
+        if (!self::connect()) {
+            throw new \Exception('unable to connect');
+        }
+        $expressionsWhere = [];
+        $bind = [];
+        foreach ($where as $column => $value) {
+            $column = \preg_replace('/[^a-zA-Z0-9_-]/', '', $column);
+            $expressionsWhere[] = $column . '=' . ':' . $column;
+            $bind[':' . $column] = $value;
+        }
+        $sql = \sprintf(
+            'SELECT * FROM `%s` WHERE %s',
+            $table,
+            \implode(' AND ', $expressionsWhere)
+        );
+        $pdo = self::$connection;
+        $statement = $pdo->prepare($sql);
+        if ($statement->execute($bind)) {
+            $row = $statement->fetch(PDO::FETCH_ASSOC);
+            return $row ?: null;
+        }
+        return null;
+    }
+
+    /**
+     * @param string $table
      * @param array $values
-     * @param string $error
-     * @return bool|string
+     * @param string|null $error
+     * @return bool|string|null
      * @throws \Exception
      */
     public static function insert(string $table, array $values, string & $error = null) {
@@ -56,7 +90,7 @@ class PDOHelper {
             return $pdo->lastInsertId();
         }
         $error = $statement->errorInfo()[2] ?? null;
-        return false;
+        return null;
     }
 
     /**

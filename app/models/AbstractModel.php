@@ -53,6 +53,16 @@ abstract class AbstractModel {
     }
 
     /**
+     * @param array $where
+     * @return $this|null
+     * @throws \Exception
+     */
+    public static function get(array $where): ?self {
+        $row = PDOHelper::get(static::TABLE, $where);
+        return $row ? new static($row) : null;
+    }
+
+    /**
      * @return mixed|null
      * @throws \Exception
      */
