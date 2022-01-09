@@ -5,12 +5,13 @@ DROP TABLE IF EXISTS tasks;
 
 CREATE TABLE tasks (
   id int(11) NOT NULL AUTO_INCREMENT,
-  username varchar(64) NOT NULL,
+  email varchar(128) NOT NULL,
   started datetime NULL,
   finished datetime NULL,
-  result json NOT NULL,
+  input json NULL,
+  result json NULL,
   PRIMARY KEY (id),
-  INDEX idx_username (username)
+  INDEX idx_email (email)
 )
 ENGINE = INNODB
 CHARACTER SET utf8
