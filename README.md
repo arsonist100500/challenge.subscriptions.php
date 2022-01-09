@@ -23,3 +23,7 @@ php app/cli/cli.php send-notifications 10
 This command should be run by cron every minute.
 The parameter value indicates amount of parallel processes.
 Each process sends one email message.
+
+# App structure
+
+App logs are stored inside `logs` directory.
