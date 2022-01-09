@@ -21,6 +21,7 @@ class Log {
 	protected static $buffer = [];
 	protected static $verbosity = self::INFO;
 	protected static $prefix = "";
+	protected static $delimiterAfterLog = "\n\n\n\n\n";
 	protected static $fileName = null;
 	protected static $instanceAutoSave = null;		// Object needed to auto-save log file.
 
@@ -52,6 +53,7 @@ class Log {
 	public static function setFlagPrintVerbosity(bool $value) { self::$flagPrintVerbosity = $value; }
 	public static function setFlagPrefixMultiline(bool $value) { self::$flagPrefixMultiline = $value; }
 	public static function setFlagArrayPrettyPrint(bool $value) { self::$flagArrayPrettyPrint = $value; }
+	public static function setDelimiterAfterLog(string $delimiter) { self::$delimiterAfterLog = $delimiter; }
 	public static function setMessagePrefix(string $s) { self::$prefix = $s; self::trimMessagePrefix(); }
 	public static function appendMessagePrefix(string $s) { self::$prefix .= "-".$s; self::trimMessagePrefix(); }
 
@@ -65,6 +67,11 @@ class Log {
 		self::$errors[] = self::makeLogLine($s);
 		self::addMessage($s, self::ERROR);
 	}
+
+    public static function empty(): void {
+	    self::$buffer = [];
+	    self::$errors = [];
+    }
 
 	public static function getMessages(): array {
 		if (\is_array(self::$buffer)) {
@@ -126,7 +133,7 @@ class Log {
 			$lines = self::getMessages();
 			if (!empty($lines)) {
 				$sBuffer = join("\n", $lines);
-				$sBuffer .= "\n\n\n\n\n";
+				$sBuffer .= self::$delimiterAfterLog;
 				$bSaved = file_put_contents(self::$fileName, $sBuffer, FILE_APPEND | LOCK_EX);
 				// Set permissions: group has write-permission.
 				if ($bSaved) { @chmod(self::$fileName, 0664); }
