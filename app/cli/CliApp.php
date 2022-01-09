@@ -40,8 +40,8 @@ class CliApp {
                 exit($exitCode);
             }
         } catch (\Exception $e) {
-            printf('Exception: %s\n', $e->getMessage());
-            printf('Trace:\n%s\n', $e->getTraceAsString());
+            \printf('Exception: %s\n', $e->getMessage());
+            \printf('Trace:\n%s\n', $e->getTraceAsString());
         }
     }
 
