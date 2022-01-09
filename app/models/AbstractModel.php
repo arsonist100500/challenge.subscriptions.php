@@ -57,11 +57,12 @@ abstract class AbstractModel {
      * @throws \Exception
      */
     public function insert() {
-        $pk = PDOHelper::insert(static::TABLE, $this->prepareValuesForDatabase());
+        $pk = PDOHelper::insert(static::TABLE, $this->prepareValuesForDatabase(), $error);
         if ($pk !== false) {
             $this->values[static::PRIMARY_KEY] = FieldHelper::cast($pk, static::FIELD_TYPES[static::PRIMARY_KEY]);
+            return $pk;
         }
-        return $pk;
+        throw new \Exception('failed to insert: ' . $error);
     }
 
     /**

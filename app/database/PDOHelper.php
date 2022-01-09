@@ -37,10 +37,11 @@ class PDOHelper {
     /**
      * @param string $table
      * @param array $values
+     * @param string $error
      * @return bool|string
      * @throws \Exception
      */
-    public static function insert(string $table, array $values) {
+    public static function insert(string $table, array $values, string & $error = null) {
         if (empty($values)) {
             return false;
         }
@@ -65,6 +66,7 @@ class PDOHelper {
         if ($statement->execute($bind)) {
             return $pdo->lastInsertId();
         }
+        $error = $statement->errorInfo()[2] ?? null;
         return false;
     }
 
@@ -76,7 +78,7 @@ class PDOHelper {
      * @throws \Exception
      */
     public static function update(string $table, array $set, array $where): bool {
-        if (empty($set)) {
+        if (empty($set) || empty($where)) {
             return false;
         }
         if (!self::connect()) {
