@@ -2030,7 +2030,7 @@ return [
     ],
     'domains' => [
         'gmail.com',
-        'yahho.com',
+        'yahoo.com',
         'mail.com',
         'hotmail.com',
         'mail.ru',
