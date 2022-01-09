@@ -6,6 +6,7 @@ namespace app\workers;
 
 use app\common\Config;
 use app\email\EmailService;
+use app\models\UserModel;
 
 /**
  * Class ExpirationEmailWorker
@@ -24,7 +25,15 @@ class ExpirationEmailWorker extends AbstractWorker {
         $subject = "$username, your subscription is expiring soon";
         $body = "Dear $username, your subscription is expiring on $expirationDatetime";
         $from = (string)Config::get('env.email.from');
+
         EmailService::send_email($email, $from, $email, $subject, $body);
+
+        $user = UserModel::get(['username' => $username]);
+        if ($user) {
+            $user->notified = (new \DateTime('now'))->format('Y-m-d H:i:s');
+            $user->update();
+        }
+
         return ['result' => 'ok'];
     }
 }
